@@ -47,10 +47,12 @@ class MixPusherCacheCommand extends Command
         }
 
         $manifest = json_decode(file_get_contents($manifestPath), true);
+        $cache = Cache::tags('mix-pusher');
 
-        Cache::tags('mix-pusher')->flush();
+        $cache->flush();
         foreach ($manifest as $name => $link) {
-            Cache::tags('mix-pusher')->forever($name, $link);
+            $this->info('Cached: ' . $name . ' as ' . $link);
+            $cache->forever($name, $link);
         }
     }
 }
