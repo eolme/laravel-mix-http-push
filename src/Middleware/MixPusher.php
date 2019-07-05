@@ -3,6 +3,8 @@
 namespace Eolme\MixPusher\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Cache;
@@ -10,14 +12,14 @@ use Illuminate\Support\Facades\Cache;
 class MixPusher
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         /** @var Response $response */
         $response = $next($request);
@@ -49,34 +51,41 @@ class MixPusher
     /**
      * Determines whether a string ends with the characters of a specified string
      * 
+     * @param string $haystack
+     * @param string $needle
+     * 
      * @return bool
      */
-    protected function endWith($haystack, $needle): bool
+    private function endWith($haystack, $needle): bool
     {
         return substr_compare($haystack, $needle, -strlen($needle)) === 0;
     }
 
     /**
-     * Check if the content type header is html.
+     * Check if the content type header is html
      *
-     * @param \Illuminate\Http\Response $response
+     * @param Response $response
      *
      * @return bool
      */
-    protected function isHtml($response): bool
+    private function isHtml(Response $response): bool
     {
         return 0 === strpos($response->headers->get('Content-Type'), 'text/html');
     }
 
     /**
-     * Check if the response should be processed.
+     * Check if the response should be processed
      *
-     * @param \Illuminate\Http\Response $response
+     * @param mixed $response
      *
      * @return bool
      */
-    protected function shouldProcess($response): bool
+    private function shouldProcess(Response $response): bool
     {
+        if (!($response instanceof Response)) {
+            return false;
+        }
+
         if ($response instanceof BinaryFileResponse) {
             return false;
         }
@@ -91,11 +100,10 @@ class MixPusher
     /**
      * Add Link Header
      *
-     * @param \Illuminate\Http\Response $response
-     *
-     * @param $link
+     * @param Response $response
+     * @param string $link
      */
-    protected function addLinkHeader(Response $response, $link)
+    private function addLinkHeader(Response $response, $link): void
     {
         if ($response->headers->get('Link')) {
             $link = $response->headers->get('Link') . ',' . $link;
