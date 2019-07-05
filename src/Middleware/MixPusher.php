@@ -31,11 +31,11 @@ class MixPusher
                         if ($cache->has($name)) {
                             $link = $cache->get($name);
                             if ($this->endWith($name, 'js')) {
-                                $response->header('Link', "<{$link}>; rel=preload; as=script");
+                                $this->addLinkHeader($response, "<{$link}>; rel=preload; as=script");
                                 continue;
                             }
                             if ($this->endWith($name, 'css')) {
-                                $response->header('Link', "<{$link}>; rel=preload; as=style");
+                                $this->addLinkHeader($response, "<{$link}>; rel=preload; as=style");
                             }
                         }
                     }
@@ -86,5 +86,20 @@ class MixPusher
         }
 
         return $this->isHtml($response);
+    }
+
+    /**
+     * Add Link Header
+     *
+     * @param \Illuminate\Http\Response $response
+     *
+     * @param $link
+     */
+    protected function addLinkHeader(Response $response, $link)
+    {
+        if ($response->headers->get('Link')) {
+            $link = $response->headers->get('Link') . ',' . $link;
+        }
+        $response->header('Link', $link);
     }
 }
