@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Eolme\\MixPusher\\MixPusherServiceProviders"
+                "Eolme\\MixPusher\\MixPusherServiceProvider"
             ]
         }
     },
