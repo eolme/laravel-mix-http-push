@@ -3,6 +3,7 @@
 namespace Eolme\MixPusher;
 
 use Illuminate\Support\ServiceProvider;
+use Eolme\MixPusher\Console\MixPusherCacheCommand;
 
 class MixPusherServiceProvider extends ServiceProvider
 {
