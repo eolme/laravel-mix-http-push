@@ -5,8 +5,6 @@ namespace Eolme\MixPusher\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Cache;
 
 class MixPusher
@@ -80,17 +78,13 @@ class MixPusher
      *
      * @return bool
      */
-    private function shouldProcess(Response $response): bool
+    private function shouldProcess($response): bool
     {
+        if ($response->isRedirection()) {
+            return false;
+        }
+
         if (!($response instanceof Response)) {
-            return false;
-        }
-
-        if ($response instanceof BinaryFileResponse) {
-            return false;
-        }
-
-        if ($response instanceof StreamedResponse) {
             return false;
         }
 
