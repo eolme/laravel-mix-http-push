@@ -23,9 +23,8 @@ class MixPusher
         $response = $next($request);
 
         if ($this->shouldProcess($response)) {
-            $url = $request->url();
+            $url = $request->getHttpHost() . $request->getBaseUrl() . $request->getPathInfo();
             $cache = Cache::tags('mix-pusher');
-
             foreach (config('mix-pusher.routes') as $route => $res) {
                 if (strpos($url, $route) === 0) {
                     foreach ($res as $name) {
