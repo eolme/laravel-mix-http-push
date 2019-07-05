@@ -65,7 +65,7 @@ class MixPusher
      */
     protected function isHtml($response): bool
     {
-        return 0 === mb_strpos($response->headers->get('Content-Type'), 'text/html');
+        return 0 === strpos($response->headers->get('Content-Type'), 'text/html');
     }
 
     /**
