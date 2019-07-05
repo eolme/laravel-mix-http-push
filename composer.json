@@ -1,0 +1,38 @@
+{
+    "name": "eolme/laravel-mix-http-push",
+    "description": "Mix powered http/2 push middleware with Laravel support",
+    "keywords": [
+        "laravel",
+        "laravel-mix",
+        "laravel-httppush",
+        "httppush",
+        "preload"
+    ],
+    "homepage": "https://github.com/eolme/laravel-mix-http-push",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Anton Petrov",
+            "email": "case@petrov.website"
+        }
+    ],
+    "require": {
+        "php": "^5.5|^7.0",
+        "illuminate/support": "^5.3",
+        "illuminate/http": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eolme\\MixPusher\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eolme\\MixPusher\\MixPusherServiceProviders"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
